@@ -79,14 +79,21 @@ class App extends React.Component {
         // place last_id into async storage... and also increment last_id
     }
 
-    createDrink() {
-        let newArray = [this.state.oof]
-        for(let i = 0; i < this.state.order.length; i++) {
-            newArray.push(this.state.order[id])
-            if(this.state.order[i]['id'] == this.state.last_id)
-                break
+    createDrink = async (cb, ex) => {
+        try{let s = `${this.state.oof.tea?'Jasmine tea':'No tea'} ${this.state.oof.topping?'with boba':'with no boba'}`
+        let b = await fetch(BASE_URL + '/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+            body: JSON.stringify({item: s, ice: 0, sugar: 0}),
+            })
+        let js = b.json()
+        cb(js)}
+        catch(err){
+            ex()
         }
-        this.setState({oof: '', order: newArray})
     }
 
     refresh = async (l_id) => {
@@ -115,6 +122,7 @@ class App extends React.Component {
             })
         })
         .catch(err => {
+            console.error(err)
             Snackbar.show({
                 title: 'Error refreshing queue.',
                 duration: Snackbar.LENGTH_SHORT,
@@ -130,7 +138,7 @@ class App extends React.Component {
 
     scroll = (o) => {
         this.swiper.current.scrollBy(1)
-        return this.setState({ page: this.state.page + 1, order: o })
+        return this.setState({ page: this.state.page + 1, oof: o })
     }
     back = () => {
         this.swiper.current.scrollBy(-1)

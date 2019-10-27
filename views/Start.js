@@ -8,7 +8,7 @@ import Colors  from '../components/common/Colors'
 const iconMap = {
     default: 'star-border',
     local: 'local-drink',
-    car: 'directions-car'
+    car: 'local-drink'
 }
 
 const noItem = {

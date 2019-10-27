@@ -37,8 +37,8 @@ class CreditCard extends React.Component {
         // block and then send to server
         this.setState({ isSubmitting: true })
         let self = this
-        setTimeout(()=>{
-            this.props.createDrink()
+         await   this.props.createDrink(() => {
+             
             this.setState({isSubmitting: false}); 
             Alert.alert(
                 'Thanks for your order!',
@@ -48,7 +48,8 @@ class CreditCard extends React.Component {
                 ],
                 {cancelable: false},
               );
-        }, 888)
+           } ,(err => Alert.alert('Error creating your drink', 'Please try again later')))
+            
         // wait and then move onto next
     }
 
