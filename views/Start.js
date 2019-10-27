@@ -17,6 +17,16 @@ const noItem = {
     icon: 'default'
 }
 
+function mapItemToItem(item) {
+    if(item.title) return item
+    return {
+        title: item.item,
+        subtitle: `${item.sugar}% Sugar, ${item.ice}% Ice`,
+        icon: item.car? 'car':'local',
+        id: item.id
+    }
+}
+
 const Item = (props) =>
     <View style={{
         flexDirection: 'row',
@@ -27,14 +37,16 @@ const Item = (props) =>
     }}>
         <Icon name={iconMap[props.item.icon]} size={40} style={{ marginRight: 18 }} />
         <View>
-            <Subtitle>{props.item.title}</Subtitle>
+            <View style={{flexDirection: 'row', flex:1, justifyContent: 'space-between'}}>
+            <Subtitle>{!isNaN(props.id + 1) && `#${props.id + 1}`} {props.item.title} </Subtitle>
+            </View>
             <Text style={{ color: 'rgba(0, 0, 0 , 0.5)' }}>{props.item.subtitle} </Text>
         </View>
 
     </View>
 const QueueContainer = (props) =>
     <View style={{ ...styles.qContaienr, ...styles.shadow }}>
-        {props.items.length ? props.items.map((i, id) => <Item item={i} id={id} />) : <Item item={noItem} />
+        {props.items.length ? props.items.map((i, id) => <Item item={mapItemToItem(i)} id={id} />) : <Item item={noItem} />
 
         }
     </View>
@@ -50,7 +62,7 @@ class Start extends React.Component {
                     <Title style={{ textAlign: 'center' }}>
                         Up Next
                     </Title>
-                    <QueueContainer items={[]}>
+                    <QueueContainer items={this.props.orders}>
                     </QueueContainer>
                 </ScrollView>
                 <View

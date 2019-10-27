@@ -38,6 +38,7 @@ class CreditCard extends React.Component {
         this.setState({ isSubmitting: true })
         let self = this
         setTimeout(()=>{
+            this.props.createDrink()
             this.setState({isSubmitting: false}); 
             Alert.alert(
                 'Thanks for your order!',
